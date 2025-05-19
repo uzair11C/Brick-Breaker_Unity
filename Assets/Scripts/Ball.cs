@@ -11,6 +11,9 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private float speed = 400;
 
+    [SerializeField]
+    private Transform explosion;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,27 @@ public class Ball : MonoBehaviour
             Debug.Log("Game Over");
             rb.velocity = Vector2.zero;
             inPlay = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("brick"))
+        {
+            // Transform newExplosion = Instantiate(
+            //     explosion,
+            //     collision.transform.position,
+            //     collision.transform.rotation
+            // );
+            Destroy(
+                Instantiate(
+                    explosion,
+                    collision.transform.position,
+                    collision.transform.rotation
+                ).gameObject,
+                1.0f
+            );
+            Destroy(collision.gameObject);
         }
     }
 }
