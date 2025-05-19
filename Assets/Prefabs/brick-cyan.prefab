@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6174125718068462189}
   - component: {fileID: 4985372592450978226}
   - component: {fileID: 3187190863802614452}
+  - component: {fileID: 121473949426022639}
   m_Layer: 0
   m_Name: brick-cyan
   m_TagString: brick
@@ -130,3 +131,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 0.75}
   m_EdgeRadius: 0
+--- !u!114 &121473949426022639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9000791399478888004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0efa612e3eb9d624381be2974cc0c22e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

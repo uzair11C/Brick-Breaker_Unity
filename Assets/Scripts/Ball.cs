@@ -3,7 +3,11 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Renderer ballRenderer;
     private bool inPlay;
+
+    [SerializeField]
+    private ColorScript colorScript;
 
     [SerializeField]
     private Transform paddleTransform;
@@ -14,10 +18,16 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private Transform explosion;
 
+    [SerializeField]
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        colorScript = FindObjectOfType<ColorScript>();
+        ballRenderer = GetComponent<Renderer>();
+        // gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -42,6 +52,7 @@ public class Ball : MonoBehaviour
             Debug.Log("Game Over");
             rb.velocity = Vector2.zero;
             inPlay = false;
+            gameManager.UpdateLives(-1);
         }
     }
 
@@ -49,11 +60,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.transform.CompareTag("brick"))
         {
-            // Transform newExplosion = Instantiate(
-            //     explosion,
-            //     collision.transform.position,
-            //     collision.transform.rotation
-            // );
+            // The explosion is of type Transform, if need to separate to variable in the future
             Destroy(
                 Instantiate(
                     explosion,
@@ -62,7 +69,9 @@ public class Ball : MonoBehaviour
                 ).gameObject,
                 1.0f
             );
+            gameManager.UpdateScore(collision.gameObject.GetComponent<Brick>().points);
             Destroy(collision.gameObject);
+            ballRenderer.material.color = colorScript.RandomColor(bright: true);
         }
     }
 }
