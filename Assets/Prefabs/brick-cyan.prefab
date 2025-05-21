@@ -144,3 +144,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 1
+  hitPoints: 1
+  brokenSprite: {fileID: 21300000, guid: 4ccbf03b8131d494bb63cb39fcb673b1, type: 3}

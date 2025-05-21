@@ -59,24 +59,25 @@ public class Ball : MonoBehaviour
     {
         if (collision.transform.CompareTag("brick"))
         {
-            if (powerUps.Length > 0)
+            Brick brick = collision.gameObject.GetComponent<Brick>();
+
+            if (brick.hitPoints > 1)
             {
-                int randomChance = Random.Range(1, 101);
-
-                Debug.Log("Powerup drop chance: " + randomChance);
-
-                if (randomChance <= 30)
-                {
-                    Instantiate(
-                        powerUps[Random.Range(0, powerUps.Length)],
-                        collision.transform.position,
-                        collision.transform.rotation
-                    );
-                }
+                brick.BreakBrick();
+                return;
             }
-            else
+
+            int randomChance = Random.Range(1, 101);
+
+            Debug.Log("Powerup drop chance: " + randomChance);
+
+            if (randomChance <= 30)
             {
-                Debug.LogWarning("PowerUps array is empty!");
+                Instantiate(
+                    powerUps[Random.Range(0, powerUps.Length)],
+                    collision.transform.position,
+                    collision.transform.rotation
+                );
             }
 
             Destroy(collision.gameObject);
@@ -89,7 +90,7 @@ public class Ball : MonoBehaviour
                 ).gameObject,
                 1.0f
             );
-            gameManager.UpdateScore(collision.gameObject.GetComponent<Brick>().points);
+            gameManager.UpdateScore(brick.points);
             gameManager.BrickDestroyed();
             ballRenderer.material.color = colorScript.RandomColor(bright: true);
         }
