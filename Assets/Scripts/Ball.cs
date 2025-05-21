@@ -70,6 +70,7 @@ public class Ball : MonoBehaviour
                 1.0f
             );
             gameManager.UpdateScore(collision.gameObject.GetComponent<Brick>().points);
+            gameManager.BrickDestroyed();
             Destroy(collision.gameObject);
             ballRenderer.material.color = colorScript.RandomColor(bright: true);
         }
