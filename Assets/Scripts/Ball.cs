@@ -21,16 +21,16 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private GameManager gameManager;
 
-    // Start is called before the first frame update
+    [SerializeField]
+    Transform[] powerUps;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         colorScript = FindObjectOfType<ColorScript>();
         ballRenderer = GetComponent<Renderer>();
-        // gameManager = FindObjectOfType<GameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!inPlay)
@@ -49,7 +49,6 @@ public class Ball : MonoBehaviour
     {
         if (collision.CompareTag("bottomCollider"))
         {
-            Debug.Log("Game Over");
             rb.velocity = Vector2.zero;
             inPlay = false;
             gameManager.UpdateLives(-1);
@@ -60,6 +59,27 @@ public class Ball : MonoBehaviour
     {
         if (collision.transform.CompareTag("brick"))
         {
+            if (powerUps.Length > 0)
+            {
+                int randomChance = Random.Range(1, 101);
+
+                Debug.Log("Powerup drop chance: " + randomChance);
+
+                if (randomChance <= 30)
+                {
+                    Instantiate(
+                        powerUps[Random.Range(0, powerUps.Length)],
+                        collision.transform.position,
+                        collision.transform.rotation
+                    );
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PowerUps array is empty!");
+            }
+
+            Destroy(collision.gameObject);
             // The explosion is of type Transform, if need to separate to variable in the future
             Destroy(
                 Instantiate(
@@ -71,7 +91,6 @@ public class Ball : MonoBehaviour
             );
             gameManager.UpdateScore(collision.gameObject.GetComponent<Brick>().points);
             gameManager.BrickDestroyed();
-            Destroy(collision.gameObject);
             ballRenderer.material.color = colorScript.RandomColor(bright: true);
         }
     }
