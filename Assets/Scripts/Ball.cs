@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Rigidbody2D rb;
     private Renderer ballRenderer;
-    private bool inPlay;
 
     [SerializeField]
     private ColorScript colorScript;
-
-    [SerializeField]
-    private Transform paddleTransform;
 
     [SerializeField]
     private float speed = 400;
@@ -26,22 +21,21 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         colorScript = FindObjectOfType<ColorScript>();
         ballRenderer = GetComponent<Renderer>();
     }
 
     void Update()
     {
-        if (!inPlay)
+        if (!gameManager.ballInPlay)
         {
-            transform.position = paddleTransform.position;
+            gameManager.ResetBall();
         }
 
-        if (Input.GetButtonDown("Jump") && !inPlay)
+        if (Input.GetButtonDown("Jump") && !gameManager.ballInPlay)
         {
-            inPlay = true;
-            rb.AddForce(Vector2.up * speed);
+            gameManager.ballInPlay = true;
+            gameManager.ball.AddForce(Vector2.up * speed);
         }
     }
 
@@ -49,8 +43,9 @@ public class Ball : MonoBehaviour
     {
         if (collision.CompareTag("bottomCollider"))
         {
-            rb.velocity = Vector2.zero;
-            inPlay = false;
+            gameManager.ball.velocity = Vector2.zero;
+            gameManager.ballInPlay = false;
+            gameManager.ResetBall();
             gameManager.UpdateLives(-1);
         }
     }
@@ -68,8 +63,6 @@ public class Ball : MonoBehaviour
             }
 
             int randomChance = Random.Range(1, 101);
-
-            Debug.Log("Powerup drop chance: " + randomChance);
 
             if (randomChance <= 30)
             {
