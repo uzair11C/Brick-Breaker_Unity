@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 184943905}
   m_Layer: 0
   m_Name: rightCollider
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3272,7 +3272,7 @@ GameObject:
   - component: {fileID: 1563446968}
   m_Layer: 0
   m_Name: leftCollider
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3804,7 +3804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e373e3799d641c4abfef38d5602670c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfBricks: 0
   livesText: {fileID: 922440090}
   scoreText: {fileID: 149530295}
   ballInPlay: 0
@@ -3817,7 +3816,8 @@ MonoBehaviour:
   boostSlider: {fileID: 1809449573}
   gameOverUI: {fileID: 1013203514}
   levelCompleteUI: {fileID: 689385683}
-  currentScoreText: {fileID: 566906319}
+  winCurrentScoreText: {fileID: 520829284}
+  loseCurrentScoreText: {fileID: 380861348}
   levelJsonFiles:
   - {fileID: 4900000, guid: 948c67518a9ebbc49bad6c3345a38e0b, type: 3}
   - {fileID: 4900000, guid: f609e25810106e1448ec305a819cde33, type: 3}

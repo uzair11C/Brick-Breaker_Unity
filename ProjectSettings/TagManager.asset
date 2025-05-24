@@ -8,6 +8,7 @@ TagManager:
   - brick
   - extraLife
   - speedBoost
+  - wall
   layers:
   - Default
   - TransparentFX

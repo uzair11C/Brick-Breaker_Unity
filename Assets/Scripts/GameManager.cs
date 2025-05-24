@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     /**************  Game State Variables  **************/
     private int score;
     private int lives = 3;
-
-    [SerializeField]
     private int numberOfBricks;
 
     [SerializeField]
@@ -60,7 +58,10 @@ public class GameManager : MonoBehaviour
     GameObject levelCompleteUI;
 
     [SerializeField]
-    TextMeshProUGUI currentScoreText;
+    TextMeshProUGUI winCurrentScoreText;
+
+    [SerializeField]
+    TextMeshProUGUI loseCurrentScoreText;
 
     /****************************************************/
 
@@ -212,35 +213,41 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
+        if (score > PlayerPrefs.GetInt("BrickBreaker_highScore", 0))
+        {
+            Debug.Log("New High Score!");
+            PlayerPrefs.SetInt("BrickBreaker_highScore", score);
+        }
         gameOverUI.SetActive(true);
+        loseCurrentScoreText.text = "Your Score: " + score.ToString();
+        ResetBallAndPaddle();
         Time.timeScale = 0f;
     }
 
     void LevelComplete()
     {
+        winCurrentScoreText.text = "Your Score: " + score.ToString();
         if (score > PlayerPrefs.GetInt("BrickBreaker_highScore", 0))
         {
             Debug.Log("New High Score!");
-            // PlayerPrefs.SetInt("BrickBreaker_highScore", score);
+            PlayerPrefs.SetInt("BrickBreaker_highScore", score);
         }
-        ballInPlay = false;
-        currentScoreText.text = "Your Score: " + score.ToString();
         Time.timeScale = 0f;
         ResetBallAndPaddle();
         levelCompleteUI.SetActive(true);
     }
 
-    public void ResetBall()
+    public void ResetBallPosiiton()
     {
+        ballInPlay = false;
         Transform paddleAnchor = paddleTransform.Find("anchor");
         ball.transform.position = paddleAnchor.position;
     }
 
     public void ResetBallAndPaddle()
     {
-        Transform paddleAnchor = paddleTransform.Find("anchor");
+        ResetBallPosiiton();
         paddleTransform.position = new Vector2(0, -4.3f);
-        ball.transform.position = paddleAnchor.position;
         ball.velocity = Vector2.zero;
     }
 

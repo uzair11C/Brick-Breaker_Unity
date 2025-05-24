@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
     {
         if (!gameManager.ballInPlay)
         {
-            gameManager.ResetBall();
+            gameManager.ResetBallPosiiton();
         }
 
         if (Input.GetButtonDown("Jump") && !gameManager.ballInPlay)
@@ -45,13 +45,29 @@ public class Ball : MonoBehaviour
         {
             gameManager.ball.velocity = Vector2.zero;
             gameManager.ballInPlay = false;
-            gameManager.ResetBall();
+            gameManager.ResetBallPosiiton();
             gameManager.UpdateLives(-1);
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // Fix horizontal-only bounce on wall collisions
+        if (collision.transform.CompareTag("wall"))
+        {
+            Vector2 velocity = gameManager.ball.velocity;
+            float speed = velocity.magnitude;
+
+            // If vertical speed is too low, nudge it
+            if (Mathf.Abs(velocity.y) < 0.2f)
+            {
+                velocity.y = velocity.y < 0 ? -0.5f : 0.5f;
+                velocity = velocity.normalized * speed;
+                gameManager.ball.velocity = velocity;
+            }
+        }
+
+        // Handle brick collision
         if (collision.transform.CompareTag("brick"))
         {
             Brick brick = collision.gameObject.GetComponent<Brick>();
